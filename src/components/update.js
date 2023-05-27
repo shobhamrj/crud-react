@@ -75,33 +75,19 @@ export const Update = (props) => {
         console.log('Updating order:', order);
     };
 
-    const handleFoodItemChange = (event, index) => {
+    const handleChange = (event) => {
         const { name, value } = event.target;
-        setOrder(prevOrder => {
-            const updatedFoodItems = [...prevOrder.food_items];
-            updatedFoodItems[index] = {
-                ...updatedFoodItems[index],
-                [name]: value
-            };
-            return {
-                ...prevOrder,
-                food_items: updatedFoodItems
-            };
-        });
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            [name]: value
+        }));
     };
 
-
-    if (!order) {
-        return <div>Loading...</div>;
-    }
-
-    function handleChange() {
-
-    }
+    if (!order) return <div>Loading...</div>
 
     return (
         <div className="container">
-            <h2>Update Order</h2>
+            <h2 className="m-4">Update</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Order ID:</label>
@@ -109,7 +95,6 @@ export const Update = (props) => {
                         type="text"
                         name="order_id"
                         value={order.order_id}
-                        onChange={handleChange}
                         className="form-control"
                         disabled
                     />
@@ -123,21 +108,21 @@ export const Update = (props) => {
                                     type="text"
                                     name={`food_items[${index}].name`}
                                     value={food.name}
-                                    onChange={(event) => handleFoodItemChange(event, index)}
+                                    onChange={(e) => handleChange(e)}
                                     className="form-control"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].quantity`}
                                     value={food.quantity}
-                                    onChange={(event) => handleFoodItemChange(event, index)}
+                                    onChange={(e) => handleChange(e)}
                                     className="form-control"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].unit_price`}
                                     value={food.unit_price}
-                                    onChange={(event) => handleFoodItemChange(event, index)}
+                                    onChange={(e) => handleChange(e)}
                                     className="form-control"
                                 />
                             </li>
@@ -150,14 +135,14 @@ export const Update = (props) => {
                         type="number"
                         name="total_price"
                         value={order.total_price}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                         className="form-control"
                     />
                 </div>
                 <div className="d-flex justify-content-between m-4">
                     <button type="submit" className="btn btn-primary">Update</button>
                     <Link to="/read">
-                        <button className="btn btn-secondary mx-2"> Back </button>
+                        <button className="btn btn-primary"> Back </button>
                     </Link>
                 </div>
             </form>

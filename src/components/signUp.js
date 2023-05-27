@@ -29,7 +29,12 @@ export const SignUp = () => {
 
     return (
         <div>
-            <h2 className="m-4"> Sign Up </h2>
+            <div className="d-flex justify-content-between m-4">
+                <h2> Sign Up </h2>
+                <Link to="/">
+                    <button className="btn btn-primary"> Log In </button>
+                </Link>
+            </div>
             <form>
                 <div className="mb-3">
                     <label className="form-label">Name</label>
