@@ -25,7 +25,6 @@ export const Update = () => {
     }
 
     const handleSubmit = (event) => {
-        console.log(order)
         event.preventDefault();
         axios.put(`${BASE_URL}/order/${localStorage.getItem('updateOrderId')}`,
             order,
@@ -38,12 +37,24 @@ export const Update = () => {
             })
     };
 
-    const handleChange = (event) => {
+    const handleInputChange = (event, index) => {
         const { name, value } = event.target;
-        setOrder(prevOrder => ({
-            ...prevOrder,
-            [name]: value
-        }));
+        if (name.startsWith('food_items')) {
+            const foodItems = [...order.food_items];
+            foodItems[index] = {
+                ...foodItems[index],
+                [name.split('.')[1]]: value
+            };
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                food_items: foodItems
+            }));
+        } else {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                [name]: value
+            }));
+        }
     };
 
     if (!order) return <div>Loading...</div>
@@ -71,21 +82,21 @@ export const Update = () => {
                                     type="text"
                                     name={`food_items[${index}].name`}
                                     value={food.name}
-                                    onChange={(e) => handleChange(e)}
+                                    onChange={(event) => handleInputChange(event, index)}
                                     className="form-control m-2"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].quantity`}
                                     value={food.quantity}
-                                    onChange={(e) => handleChange(e)}
+                                    onChange={(event) => handleInputChange(event, index)}
                                     className="form-control m-2"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].unit_price`}
                                     value={food.unit_price}
-                                    onChange={(e) => handleChange(e)}
+                                    onChange={(event) => handleInputChange(event, index)}
                                     className="form-control m-2"
                                 />
                             </li>
@@ -98,7 +109,7 @@ export const Update = () => {
                         type="number"
                         name="total_price"
                         value={order.total_price}
-                        onChange={(e) => handleChange(e)}
+                        onChange={(event) => handleInputChange(event)}
                         className="form-control m-2"
                     />
                 </div>

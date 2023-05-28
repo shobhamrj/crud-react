@@ -10,26 +10,6 @@ export const Create = () => {
 
     const navigate = useNavigate()
 
-    const handleInputChange = (event, index) => {
-        const { name, value } = event.target;
-        if (name.startsWith('food_items')) {
-            const foodItems = [...order.food_items];
-            foodItems[index] = {
-                ...foodItems[index],
-                [name.split('.')[1]]: value
-            };
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                food_items: foodItems
-            }));
-        } else {
-            setOrder(prevOrder => ({
-                ...prevOrder,
-                [name]: value
-            }));
-        }
-    };
-
     const handleAddForm = () => {
         setOrder(prevOrder => ({
             ...prevOrder,
@@ -48,6 +28,26 @@ export const Create = () => {
             .then(() =>{
                 navigate('/read')
             })
+    };
+
+    const handleInputChange = (event, index) => {
+        const { name, value } = event.target;
+        if (name.startsWith('food_items')) {
+            const foodItems = [...order.food_items];
+            foodItems[index] = {
+                ...foodItems[index],
+                [name.split('.')[1]]: value
+            };
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                food_items: foodItems
+            }));
+        } else {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                [name]: value
+            }));
+        }
     };
 
     return (
