@@ -48,7 +48,7 @@ export const Read = () => {
         <div>
             <div className="d-flex justify-content-between m-4">
                 <h2> View </h2>
-                <Link to="/read">
+                <Link to="/create">
                     <button className="btn btn-primary"> Create </button>
                 </Link>
             </div>

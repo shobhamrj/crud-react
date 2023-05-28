@@ -1,48 +1,106 @@
-import React, {useState} from "react";
+import React, { useState } from 'react';
 import axios from "axios";
-import {Link, useNavigate} from "react-router-dom";
-
-const header = {"Access-Control-Allow_origin": "*"}
-
+import {BASE_URL} from "../constant";
+import {useNavigate} from "react-router-dom";
 export const Create = () => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const navigation = useNavigate()
+    const [order, setOrder] = useState({
+        food_items: [{ name: '', quantity: '', unit_price: '' }],
+        total_price: ''
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios
-            .post(
-            'https://6470ff4d3de51400f72537cc.mockapi.io/api/v1/react-crud',
-            {
-                'name': name,
-                'email': email,
-                header
+    const navigate = useNavigate()
+
+    const handleInputChange = (event, index) => {
+        const { name, value } = event.target;
+        if (name.startsWith('food_items')) {
+            const foodItems = [...order.food_items];
+            foodItems[index] = {
+                ...foodItems[index],
+                [name.split('.')[1]]: value
+            };
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                food_items: foodItems
+            }));
+        } else {
+            setOrder(prevOrder => ({
+                ...prevOrder,
+                [name]: value
+            }));
+        }
+    };
+
+    const handleAddForm = () => {
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            food_items: [...prevOrder.food_items, { name: '', quantity: '', unit_price: '' }]
+        }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios.post(
+            `${BASE_URL}/order`,
+            order,
+            {headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }})
+            .then(() =>{
+                navigate('/read')
             })
-            .then(() => {
-                navigation("/read")
-            })
-    }
+    };
 
     return (
-        <div>
-            <div className="d-flex justify-content-between m-4">
-                <h2> Create </h2>
-                <Link to="/read">
-                    <button className="btn btn-primary"> Show Data </button>
-                </Link>
-            </div>
-            <form>
-                <div className="mb-3">
-                    <label className="form-label">Name</label>
-                    <input type="text" className="form-control" onChange={(e) => setName(e.target.value)}/>
+        <div className="container">
+            <h2>Create New</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Food Items:</label>
+                    <ul className="list-group">
+                        {order.food_items.map((food, index) => (
+                            <li key={index} className="list-group-item">
+                                <input
+                                    type="text"
+                                    name={`food_items[${index}].name`}
+                                    value={food.name}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                    className="form-control"
+                                />
+                                <input
+                                    type="number"
+                                    name={`food_items[${index}].quantity`}
+                                    value={food.quantity}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                    className="form-control"
+                                />
+                                <input
+                                    type="number"
+                                    name={`food_items[${index}].unit_price`}
+                                    value={food.unit_price}
+                                    onChange={(event) => handleInputChange(event, index)}
+                                    className="form-control"
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleAddForm}>
+                        Add Item
+                    </button>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Email address</label>
-                    <input type="email" className="form-control" aria-describedby="emailHelp"
-                           onChange={(e) => setEmail(e.target.value)}/>
+                <div className="form-group">
+                    <label>Total Price:</label>
+                    <input
+                        type="number"
+                        name="total_price"
+                        value={order.total_price}
+                        onChange={handleInputChange}
+                        className="form-control"
+                    />
                 </div>
-                <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                <button type="submit" className="btn btn-primary">Create Order</button>
             </form>
         </div>
     )
