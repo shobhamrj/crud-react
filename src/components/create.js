@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import {BASE_URL} from "../constant";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 export const Create = () => {
     const [order, setOrder] = useState({
         food_items: [{ name: '', quantity: '', unit_price: '' }],
@@ -52,7 +52,7 @@ export const Create = () => {
 
     return (
         <div className="container">
-            <h2>Create New</h2>
+            <h2 className="m-4">Create New</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Food Items:</label>
@@ -64,28 +64,28 @@ export const Create = () => {
                                     name={`food_items[${index}].name`}
                                     value={food.name}
                                     onChange={(event) => handleInputChange(event, index)}
-                                    className="form-control"
+                                    className="form-control m-2"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].quantity`}
                                     value={food.quantity}
                                     onChange={(event) => handleInputChange(event, index)}
-                                    className="form-control"
+                                    className="form-control m-2"
                                 />
                                 <input
                                     type="number"
                                     name={`food_items[${index}].unit_price`}
                                     value={food.unit_price}
                                     onChange={(event) => handleInputChange(event, index)}
-                                    className="form-control"
+                                    className="form-control m-2"
                                 />
                             </li>
                         ))}
                     </ul>
                     <button
                         type="button"
-                        className="btn btn-primary"
+                        className="btn btn-primary m-3"
                         onClick={handleAddForm}>
                         Add Item
                     </button>
@@ -100,7 +100,12 @@ export const Create = () => {
                         className="form-control"
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Create Order</button>
+                <div className="d-flex justify-content-between m-4">
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <Link to="/read">
+                        <button className="btn btn-primary"> Back </button>
+                    </Link>
+                </div>
             </form>
         </div>
     )
