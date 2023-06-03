@@ -79,6 +79,7 @@ export const Update = () => {
                         {order.food_items.map((food, index) => (
                             <li key={index} className="list-group-item">
                                 <input
+                                    placeholder="Food Name"
                                     type="text"
                                     name={`food_items[${index}].name`}
                                     value={food.name}
@@ -86,6 +87,7 @@ export const Update = () => {
                                     className="form-control m-2"
                                 />
                                 <input
+                                    placeholder="Food Quantity"
                                     type="number"
                                     name={`food_items[${index}].quantity`}
                                     value={food.quantity}
@@ -93,6 +95,7 @@ export const Update = () => {
                                     className="form-control m-2"
                                 />
                                 <input
+                                    placeholder="Food price"
                                     type="number"
                                     name={`food_items[${index}].unit_price`}
                                     value={food.unit_price}
@@ -106,6 +109,7 @@ export const Update = () => {
                 <div className="form-group">
                     <label>Total Price:</label>
                     <input
+                        placeholder="Food Price"
                         type="number"
                         name="total_price"
                         value={order.total_price}

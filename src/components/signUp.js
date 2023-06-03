@@ -23,7 +23,7 @@ export const SignUp = () => {
                     header
                 })
             .then(() => {
-                navigation("/login")
+                navigation("/")
             })
     }
 
